@@ -4,6 +4,7 @@
   "description": "Unofficial spotify player powered by youtube",
   "main": "src/backend/index.js",
   "scripts": {
+    "start": "node src/backend/index.js",
     "test": "nodemon src/backend/index.js"
   },
   "repository": {
@@ -25,6 +26,7 @@
   "homepage": "https://github.com/lbarcl/unplayer#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "chalk": "^4.1.1",
     "express": "^4.17.1",
     "ytdl-core": "^4.8.2"
   },
