@@ -2,19 +2,33 @@
   "name": "unplayer",
   "version": "1.0.0",
   "description": "Unofficial spotify player powered by youtube",
-  "main": "index.js",
+  "main": "src/backend/index.js",
   "scripts": {
-    "test": "nodemon index.js",
-    "start": "node index.js"
+    "test": "nodemon src/backend/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lbarcl/unplayer.git"
   },
+  "keywords": [
+    "spotify",
+    "youtube",
+    "spotify-api",
+    "ytdl-core",
+    "api-free"
+  ],
   "author": "lbarcl",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lbarcl/unplayer/issues"
   },
-  "homepage": "https://github.com/lbarcl/unplayer#readme"
+  "homepage": "https://github.com/lbarcl/unplayer#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "ytdl-core": "^4.8.2"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
+  }
 }
