@@ -76,6 +76,12 @@ div.sidebar div.playlists#playlists {
     font-size: 300%;
 }
 
+div#content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

@@ -44,7 +44,7 @@ async function intialize(user) {
         user.playlists.push(playlist.id)
         var limit = 10
         var name = playlist.name.length > 10 ? playlist.name.slice(0, limit) + '...' : playlist.name
-        elements.playlists.innerHTML += `<button onclick="load('${playlist.id}')">${name}</button>`
+        elements.playlists.innerHTML += `<button onclick="loadplaylist('${playlist.id}')">${name}</button>`
         if (!sessionStorage.getItem(playlist.id)) {   
             const plres = await axios.get(`/api/spotify/playlists/${playlist.id}`)
             sessionStorage.setItem(playlist.id, JSON.stringify(plres.data))
@@ -53,7 +53,34 @@ async function intialize(user) {
     sessionStorage.setItem("USER", JSON.stringify(user))
 }
 
-function load(id) {
+function loadplaylist(id) {
     const playlist = JSON.parse(sessionStorage.getItem(id))
-    
+    const tracks = []
+    for (let i = 0; i < playlist.tracks.length; i++) {
+        let track = playlist.tracks[i]
+        tracks.push(trackFormat(i + 1, track.image, track.name))
+    }
+
+    elements.main.innerHTML = `
+    <div class="playlist">
+    <img class="playlist-img" src="${playlist.image}">
+    <a href="${playlist.url}" target="_blank"><h2 class="playlist-name">${playlist.name}</h2></a>
+    <div class="button-holder">
+        <button class="play" onclick="play('pl', '${id}')"></button>
+    </div>
+    <hr>
+    <div class="tracks">
+        ${tracks.join(' ')}
+    </div>
+    </div>`
+}
+
+function trackFormat(index, img, name, id) {
+    const html = `
+    <div class="track">
+        <button onclick="play('track', '${id}')">${index}</button>
+        <img class="album" src="${img}">
+        <h4 class="track">${name}</h4>
+    </div>`
+    return html
 }

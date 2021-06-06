@@ -57,16 +57,19 @@ router.get('/playlists/:id', async (req, res) => {
             'length': response.data.tracks.total,
             'tracks': []
         }
+        var length = playlist.length
         for (let i = 0; i < response.data.tracks.items.length; i++) {
             playlist.tracks.push(format(response.data.tracks.items[i].track))    
         }
-        var con = (response.data.tracks.items.length >= 100) ? true : false
+        var con = (length > 100) ? true : false
+        length -= 100
         while (con) {
             response = await axios.get(response.data.tracks.next, headers)
             for (let i = 0; i < response.data.items.length; i++) {
                 playlist.tracks.push(format(response.data.items[0].track))
             }
-            con = (response.data.items.length >= 100) ? true : false
+            length -= response.data.items.length
+            con = (length > 100) ? true : false
         }
         res.header("Content-Type", 'application/json')
         res.send(JSON.stringify(playlist, null, 4))
