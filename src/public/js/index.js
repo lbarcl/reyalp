@@ -55,6 +55,7 @@ async function intialize(user) {
 
 function loadplaylist(id) {
     const playlist = JSON.parse(sessionStorage.getItem(id))
+    axios.post('/log', playlist)
     const tracks = []
     for (let i = 0; i < playlist.tracks.length; i++) {
         let track = playlist.tracks[i]

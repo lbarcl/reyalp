@@ -1,10 +1,8 @@
 const router = require('express').Router()
 const axios = require('axios')
 
-// https://open.spotify.com/user/qvu23f7tmu0f4k1oe4l3ups59
-
 router.get('/users/:id', async (req, res) => {
-    const accessToken = await reqister()
+    const accessToken = await register()
     const id = req.params.id
 
     try {
@@ -17,21 +15,20 @@ router.get('/users/:id', async (req, res) => {
 })
 
 router.get('/users/:id/playlists', async (req, res) => {
-    const accessToken = await reqister()
+    const accessToken = await register()
     const id = req.params.id
     const headers = { headers: { "Authorization": `Bearer ${accessToken}` } }
     var url = `https://api.spotify.com/v1/users/${id}/playlists`
     try {
         var response = await axios.get(url, headers)
         const playlists = response.data.items
-
-        var con = (response.data.items.length >= 20) ? true : false
+        var con = (response.data.next) ? true : false
         while (con) {
             response = await axios.get(response.data.next, headers)
             for (let i = 0; i < response.data.items.length; i++) {
                 playlists.push(response.data.items[i])
             }
-            con = (response.data.items.length >= 20) ? true : false
+            con = (response.data.next) ? true : false
         }
 
         res.header("Content-Type", 'application/json')
@@ -42,7 +39,7 @@ router.get('/users/:id/playlists', async (req, res) => {
 })
 
 router.get('/playlists/:id', async (req, res) => {
-    const accessToken = await reqister()
+    const accessToken = await register()
     const id = req.params.id
     const headers = { headers: { "Authorization": `Bearer ${accessToken}` } }
     var url = `https://api.spotify.com/v1/playlists/${id}`
@@ -57,25 +54,20 @@ router.get('/playlists/:id', async (req, res) => {
             'length': response.data.tracks.total,
             'tracks': []
         }
-        var length = playlist.length
-        for (let i = 0; i < response.data.tracks.items.length; i++) {
-            playlist.tracks.push(format(response.data.tracks.items[i].track))    
-        }
-        var con = (length > 100) ? true : false
-        length -= 100
+        var con = (response.data.tracks.next) ? true : false
+        response.data.tracks.items.forEach((item) =>  playlist.tracks.push(format(item.track)) )
+        if (con) url = response.data.tracks.next
         while (con) {
-            response = await axios.get(response.data.tracks.next, headers)
-            for (let i = 0; i < response.data.items.length; i++) {
-                playlist.tracks.push(format(response.data.items[0].track))
-            }
-            length -= response.data.items.length
-            con = (length > 100) ? true : false
+            response = await axios.get(url, headers)
+            response.data.items.forEach((item) => playlist.tracks.push(format(item.track)))
+            con = (response.data.next) ? true : false
+            if (con) url = response.data.next
         }
         res.header("Content-Type", 'application/json')
         res.send(JSON.stringify(playlist, null, 4))
     } catch (err) {
         console.log(err)
-        res.send()
+        res.sendStatus(500)
     }
 })
 
@@ -89,7 +81,7 @@ function format(temp) {
     }
 }
 
-async function reqister() {
+async function register() {
     const response = await axios({
         url: 'https://accounts.spotify.com/api/token',
         method: 'post',
