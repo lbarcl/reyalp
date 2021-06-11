@@ -18,7 +18,7 @@ function clear() {
 }
 
 function playpl(id) {
-    const pl = JSON.parse(sessionStorage.getItem(id))
+    const pl = JSON.parse(localStorage.getItem(id))
     const tracks = pl.tracks
 
     var currentIndex = tracks.length

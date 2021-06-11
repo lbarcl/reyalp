@@ -11,7 +11,7 @@ elements.body.onload = check
 async function check() {
     var color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
     elements.body.style.backgroundImage = `linear-gradient(180deg, rgb(${color[0]},${color[1]},${color[2]}) 0%, rgb(0,0,0) 85%)`
-    var user = JSON.parse(sessionStorage.getItem("USER"))
+    var user = JSON.parse(localStorage.getItem("USER"))
     if (!user) {
         let url = await window.prompt("Kullanmak için lütfen spotify profil URL giriniz")
         if (url.includes('spotify.com/user/')) {
@@ -19,7 +19,7 @@ async function check() {
             id = url[url.length - 1]
             try {
                 const response = await axios.get(`/api/spotify/users/${id}`)
-                sessionStorage.setItem("USER", JSON.stringify(response.data))
+                localStorage.setItem("USER", JSON.stringify(response.data))
                 user = response.data
             } catch (err) {
                 if (err.response.status !== 200) alert(`Provided URL is not valid`)
@@ -45,16 +45,16 @@ async function intialize(user) {
         var limit = 10
         var name = playlist.name.length > 10 ? playlist.name.slice(0, limit) + '...' : playlist.name
         elements.playlists.innerHTML += `<button onclick="loadplaylist('${playlist.id}')">${name}</button>`
-        if (!sessionStorage.getItem(playlist.id)) {   
+        if (!localStorage.getItem(playlist.id)) {   
             const plres = await axios.get(`/api/spotify/playlists/${playlist.id}`)
-            sessionStorage.setItem(playlist.id, JSON.stringify(plres.data))
+            localStorage.setItem(playlist.id, JSON.stringify(plres.data))
         }
     })
-    sessionStorage.setItem("USER", JSON.stringify(user))
+    localStorage.setItem("USER", JSON.stringify(user))
 }
 
 function loadplaylist(id) {
-    const playlist = JSON.parse(sessionStorage.getItem(id))
+    const playlist = JSON.parse(localStorage.getItem(id))
     const tracks = []
     for (let i = 0; i < playlist.tracks.length; i++) {
         let track = playlist.tracks[i]
