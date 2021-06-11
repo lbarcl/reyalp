@@ -23,6 +23,7 @@ div#content div.playlist a {
     color: white;
     padding-left: 20px;
     padding-top: 45px;
+    text-decoration:none
 }
 
 div#content div.playlist div.button-holder {

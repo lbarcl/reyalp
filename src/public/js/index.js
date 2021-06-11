@@ -58,7 +58,7 @@ function loadplaylist(id) {
     const tracks = []
     for (let i = 0; i < playlist.tracks.length; i++) {
         let track = playlist.tracks[i]
-        tracks.push(trackFormat(i + 1, track.image, track.name))
+        tracks.push(trackFormat(i + 1, track.image, track.name, track.id))
     }
 
     elements.main.innerHTML = `

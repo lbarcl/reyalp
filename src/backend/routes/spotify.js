@@ -71,6 +71,21 @@ router.get('/playlists/:id', async (req, res) => {
     }
 })
 
+router.get('/track/:id', async (req, res) => {
+    const accessToken = await register()
+    const id = req.params.id
+    const headers = { headers: { "Authorization": `Bearer ${accessToken}` } }
+    try {
+        var response = await axios.get(`https://api.spotify.com/v1/tracks/${id}`, headers)
+        var track = format(response.data)
+        res.header("Content-Type", 'application/json')
+        res.send(JSON.stringify(track, null, 4))
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
+
 function format(temp) {
     return {
         'id': temp.id,

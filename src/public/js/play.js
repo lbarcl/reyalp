@@ -1,14 +1,22 @@
 var list = []
 
 const audio = document.getElementsByTagName('audio')[0]
-const footer = document.getElementById('footer')
+const footer = {
+    'main': document.getElementById('footer'),
+    'img': document.getElementById('footer-album'),
+    'title': document.getElementById('footer-title'),
+    'contorol': {}
+}
 
 function play(type, id) {
     switch (type) {
         case 'pl':
             clear()
-            playpl(id)
+            shuffleAndAdd(id)
             changeCurrent(list[0])
+            break
+        case 'track':
+            addToFront(id)
             break
     }
 }
@@ -17,7 +25,14 @@ function clear() {
     list = []
 }
 
-function playpl(id) {
+function skip() {
+    if (list.length > 0) {
+        list.shift()
+        changeCurrent(list[0])
+    }
+}
+
+function shuffleAndAdd(id) {
     const pl = JSON.parse(localStorage.getItem(id))
     const tracks = pl.tracks
 
@@ -34,19 +49,27 @@ function playpl(id) {
     list = tracks
 }
 
-async function changeCurrent(track) {
-    const response = await axios.get(`/api/apifree/spotify?id=${track.id}`)
-    audio.src = `/api/youtube/play?url=${response.data.youtube.url}`
-    audio.play()
-    footer.innerHTML = `<img src="${track.image}" id="album"><h3>${track.name}</h3>`
+async function addToFront(id) {
+    try {
+        const response = await axios.get(`/api/spotify/track/${id}`)
+        list.unshift(response.data)
+        changeCurrent(list[0])
+    } catch (error) {}
 }
 
-audio.addEventListener("ended", () => {
-    list.shift()
-    changeCurrent(list[0])
-})
+async function changeCurrent(track) {
+    try {
+        const response = await axios.get(`/api/apifree/spotify?id=${track.id}`).catch(skip)
+        audio.src = `/api/youtube/play?url=${response.data.youtube.url}`
+        audio.play()
+        footer.img.src = track.image
+        footer.title.innerText = track.name
+        footer.main.style.display = 'grid'
+    } catch (error) {
+        skip()    
+    }
+}
 
-audio.addEventListener("error", () => {
-    list.shift()
-    changeCurrent(list[0])
-})
+audio.addEventListener("ended", skip)
+
+audio.addEventListener("error", skip)

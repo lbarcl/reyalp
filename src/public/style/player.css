@@ -5,12 +5,12 @@ div#footer {
     height: 15%;
     color: white;
     background-color:#353535;
-    display: grid;
-    grid-template-columns: 5% 5% 2% auto;
+    display: none;
+    grid-template-columns: 5% 5% 2% 30% auto;
     grid-template-rows: 20% 60% 20%
 }
 
-div#footer img#album {
+div#footer img#footer-album {
     grid-row-start: 2;
     grid-row-end: 3;
     grid-column-start: 2;
@@ -19,7 +19,7 @@ div#footer img#album {
     height: 100%;
 }
 
-div#footer h3 {
+div#footer h3#footer-title {
     grid-row-start: 2;
     grid-row-end: 3;
     grid-column-start: 4;
@@ -28,3 +28,16 @@ div#footer h3 {
     padding-top: 2%;
     margin: 0
 }
+
+div#footer div#footer-contorls {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 5;
+    grid-column-end: 6;
+}
+
+div#footer div#footer-controls button {
+    border-color: transparent;
+    border-radius: 50%;
+    background-color: white;
+} 
