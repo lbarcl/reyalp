@@ -1,0 +1,17 @@
+div#content div.search {
+    display: grid;
+    grid-template-columns: 15% 70% auto;
+    grid-template-rows: 20px 10% 20px 70px;
+}
+
+div#content div.search div.bar {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+div#content div.search div.bar input {
+    width: 70%;
+    height: 100%
+}

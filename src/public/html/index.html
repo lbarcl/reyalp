@@ -8,24 +8,23 @@
     <link rel="icon" type="image/x-icon" href="static/img/favicon.ico"/>
     <link rel="stylesheet" href="static/style/style.css">
     <link rel="stylesheet" href="static/style/playlist.css">
+    <link rel="stylesheet" href="static/style/player.css">
     <title>Reyalp</title>
 </head>
 <body>
     <div class="sidebar">
         <a href="/"><img src="static/img/reyalp.png" class="logo"></a>
         <h3>REYALP</h3>
-        <button><img src="static/img/home.png" class="icon"> Home</button>
-        <button><img src="static/img/search.png" class="icon"> Search</button>
-        <button><img src="static/img/add.png" class="icon"> Add playlist</button>
         <hr>
         <div class="playlists" id="playlists"></div>
     </div>
     <h2 id="username"></h2>
     <img id="pp">
-    <div id="content"> 
-    </div>
-    <div class="footer"></div>
+    <div id="content"></div>
+    <div id="footer"></div>
+    <audio></audio>
     <script src="static/js/index.js"></script>
+    <script src="static/js/play.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>

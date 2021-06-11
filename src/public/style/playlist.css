@@ -2,6 +2,8 @@ div#content div.playlist {
     display: grid;
     grid-template-rows: 100px 128px 128px 70px auto;
     grid-template-columns: 14% 256px 40% auto 5%;
+    width: auto;
+    height: auto;
 }
 
 div#content div.playlist img.playlist-img {
