@@ -7,7 +7,7 @@ const { log } = console
 const chalk = require('chalk')
 const path = require('path')
 const src = __dirname.replace('backend', '')
-require('dotenv').config()
+//require('dotenv').config()
 
 //* ------------------------------- INIT ---------------------------------------
 app.listen(port, () => log(chalk.green(`[BACK-END] Started listeing on ${port}`)))
