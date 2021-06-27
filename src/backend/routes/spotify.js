@@ -4,7 +4,6 @@ const axios = require('axios')
 router.get('/users/:id', async (req, res) => {
     const accessToken = await register()
     const id = req.params.id
-
     try {
         const response = await axios.get(`https://api.spotify.com/v1/users/${id}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
         res.header("Content-Type", 'application/json')
@@ -111,7 +110,7 @@ async function register() {
             username: process.env.CLIENT_ID,
             password: process.env.CLIENT_SECRET
         }
-    })
+    }).catch(err => {})
     return response?.data?.access_token
 }
 

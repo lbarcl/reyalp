@@ -5,7 +5,7 @@ div#footer {
     height: 15%;
     color: white;
     background-color:#353535;
-    display: none;
+    display: grid;
     grid-template-columns: 5% 5% 2% 30% auto;
     grid-template-rows: 20% 60% 20%
 }
@@ -34,6 +34,9 @@ div#footer div#footer-contorls {
     grid-row-end: 3;
     grid-column-start: 5;
     grid-column-end: 6;
+    display: grid;
+    grid-template-columns: 20% 20% 20% auto;
+    column-gap: 2%;
 }
 
 div#footer div#footer-controls button {

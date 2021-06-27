@@ -92,8 +92,9 @@ div#content {
     overflow-y: auto;
     overflow-x: hidden;
     height: 85%;
-    width: 100%;
+    width: 90%;
     z-index: -1;
+    left: 10%
 }
 
 /* width */
