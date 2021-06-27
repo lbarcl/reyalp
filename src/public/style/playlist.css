@@ -38,9 +38,10 @@ div#content div.playlist div.button-holder button.play {
     border-color: transparent;
     background-color: rgb(0, 255, 55);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 15%;
+    height: 70%;
     color: white;
+    font-size: 130%;
 }
 
 div#content div.playlist hr {

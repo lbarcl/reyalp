@@ -70,7 +70,7 @@ function openplaylist(id) {
     <img class="playlist-img" src="${playlist.image}">
     <a href="${playlist.url}" target="_blank"><h2 class="playlist-name">${playlist.name}</h2></a>
     <div class="button-holder">
-        <button class="play" onclick="play('${id}')"></button>
+        <button class="play" onclick="play('${id}')"><i class="bi bi-play"></i></button>
     </div>
     <hr>
     <div class="tracks">
@@ -87,4 +87,15 @@ function openplaylist(id) {
         </div>`
         return html
     }
+}
+
+function changeColor() {
+    var color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+    elements.body.style.backgroundImage = `linear-gradient(180deg, rgb(${color[0]},${color[1]},${color[2]}) 0%, rgb(0,0,0) 85%)`
+}
+
+function exit() {
+    localStorage.clear()
+    sessionStorage.clear()
+    window.location.reload()
 }

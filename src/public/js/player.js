@@ -3,39 +3,35 @@ var obj
 function play(id, options) {
     if (options) {
         obj = new player(id, options)
-
-        obj.start()
+        obj.props.audio.addEventListener('ended', () => obj.skip())
+        obj.props.audio.addEventListener('error', () => obj.skip())
+        obj.start(true)
     } else {
         obj = new player(id)
         obj.props.audio.addEventListener('ended', () => obj.skip())
         obj.props.audio.addEventListener('error', () => obj.skip())
-        obj.start()
+        obj.start(true)
     }
 }
 
 function skip() { obj.skip() }
 function constp() { obj.constp() }
-function shuffle() {
-    var state = !getvalue('shuffle')
-    localStorage.setItem('shuffle', state)
-    if (obj) obj.props.shuffle = state
-}
-
-function getvalue(id) {
-    if (localStorage.getItem(id) == 'false') return false
-    else if (localStorage.getItem(id) == 'true') return true
-}
+function shuffle() { obj.setshuffle() }
 
 class player {
     constructor(id, options) {
         this.id = id
         this.props = {
-            'shuffle': getvalue('shuffle') || false,
+            'shuffle': false,
             'state': true,
             'audio': document.getElementById('player'),
             'footer': {
                 'title': document.getElementById('footer-title'),
                 'img': document.getElementById('footer-album'),
+                'controls': {
+                    'shuffle': document.getElementById('shuffle'),
+                    'plps': document.getElementById('plps')
+                }
             }
             //'history': []
         }
@@ -50,16 +46,24 @@ class player {
         }
 
         if (this.props.shuffle) this.random()
+        this.props.footer.controls.shuffle.style.color = 'whitesmoke'
     }
 
-    async start() {
-        try {
-            const { data } = await axios.get(`/api/apifree/spotify?id=${this.tracks[0].id}`)
-            this.props.audio.src = `/api/youtube/play?url=${data.youtube.url}`
-            this.props.audio.play()
-            this.changeCurrent(this.tracks[0])
-        } catch (error) {
-            this.skip()
+    async start(f) {
+        const { data } = await axios.get(`/api/apifree/spotify?id=${this.tracks[0].id}`).catch(error => {
+            return this.skip()
+        })
+
+        this.props.audio.src = `/api/youtube/play?url=${data.youtube.url}`
+        var promise = this.props.audio.play()
+        this.props.footer.controls.plps.innerHTML = pausesvg
+        if (promise !== undefined) {
+            promise.then(_ => {
+                this.changeCurrent()
+            })
+            .catch(error => {
+                this.skip()
+            })
         }
     }
 
@@ -74,18 +78,27 @@ class player {
         if (this.props.state) {
             this.props.state = false
             this.props.audio.pause()
+            this.props.footer.controls.plps.innerHTML = playsvg
             return false
         }
         else if (!this.props.state) {
             this.props.state = true
             this.props.audio.play()
+            this.props.footer.controls.plps.innerHTML = pausesvg
             return true
         }
     }
 
-    changeCurrent(track) {
-        this.props.footer.title.innerText = track.name
-        this.props.footer.img.src = track.image
+    setshuffle() {
+        this.props.shuffle = !this.props.shuffle
+        if (this.props.shuffle) this.props.footer.controls.shuffle.style.color = `#1DB954`
+        else this.props.footer.controls.shuffle.style.color = 'whitesmoke'
+        return this.props.shuffle
+    }
+
+    changeCurrent() {
+        this.props.footer.title.innerText = this.tracks[0].name
+        this.props.footer.img.src = this.tracks[0].image
     }
 
     random() {
@@ -95,3 +108,6 @@ class player {
         this.tracks[0] = temp
     }
 }
+
+const playsvg = `<i class="bi bi-play"></i>`
+const pausesvg = `<i class="bi bi-pause"></i>`
