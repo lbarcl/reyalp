@@ -61,9 +61,9 @@ class player {
             promise.then(_ => {
                 this.changeCurrent()
             })
-            .catch(error => {
-                this.skip()
-            })
+                .catch(error => {
+                    this.skip()
+                })
         }
     }
 
@@ -106,6 +106,19 @@ class player {
         let temp = this.tracks[rindex]
         this.tracks[rindex] = this.tracks[0]
         this.tracks[0] = temp
+    }
+
+    async getlyric() {
+        const response = await axios.get(`/api/genius/lyrics?q=${(this.tracks[0].name + ' ' + artists(this.tracks[0].artist)).toLowerCase()}`).catch(err => { return alert('Üzgünüz bu şarkı için söz bulamadık') })
+        document.getElementById('content').innerHTML = response.data
+
+        function artists(artists) {
+            var art = ''
+            artists.forEach(artist => {
+                art += `${artist.name} `
+            })
+            return art
+        }
     }
 }
 
