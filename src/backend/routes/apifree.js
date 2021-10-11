@@ -4,7 +4,7 @@ const axios = require('axios')
 router.get('/spotify', async (req, res) => {
     const { id } = req.query
     try {
-        const response = await axios.get(`https://freapi.tk/v1/song/spotify?id=${id}`,
+        const response = await axios.get(`https://freapi.tk/api/song/spotify?id=${id}`,
         { headers: { 'Authorization': process.env.PIFREE } })
         res.send(response.data)
     } catch (error) {
