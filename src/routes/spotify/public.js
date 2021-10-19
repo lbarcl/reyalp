@@ -54,11 +54,11 @@ router.get('/playlists/:id', async (req, res) => {
             'tracks': []
         }
         var con = (response.data.tracks.next) ? true : false
-        response.data.tracks.items.forEach((item) =>  playlist.tracks.push(format(item.track)) )
+            response.data.tracks.items.forEach((item) => { let fdata = format(item.track); if (fdata == null) { console.log(item) } else {playlist.tracks.push(fdata)}  })
         if (con) url = response.data.tracks.next
         while (con) {
             response = await axios.get(url, headers)
-            response.data.items.forEach((item) => playlist.tracks.push(format(item.track)))
+            response.data.items.forEach((item) => { let fdata = format(item.track); if (fdata == null) { console.log(item) } else {playlist.tracks.push(fdata)}  })
             con = (response.data.next) ? true : false
             if (con) url = response.data.next
         }
@@ -86,6 +86,7 @@ router.get('/track/:id', async (req, res) => {
 })
 
 function format(temp) {
+    if (temp == null) return null
     return {
         'id': temp.id,
         'url': temp.external_urls.spotify,
